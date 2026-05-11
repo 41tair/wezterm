@@ -70,24 +70,39 @@ config.scrollback_lines = 1000
 config.audible_bell = 'Disabled'
 config.check_for_updates = false
 
--- Leader key: CTRL+a, then press the following key.
-config.leader = { key = 'a', mods = 'CTRL', timeout_milliseconds = 1000 }
+-- Emacs-style window prefix: CTRL+x, then press the following key.
+config.leader = { key = 'x', mods = 'CTRL', timeout_milliseconds = 1000 }
 
 config.keys = {
   { key = 't', mods = 'CMD', action = act.SpawnTab 'CurrentPaneDomain' },
   { key = 'w', mods = 'CMD', action = act.CloseCurrentTab { confirm = true } },
   { key = 'Enter', mods = 'CMD', action = act.ToggleFullScreen },
 
-  { key = '|', mods = 'LEADER|SHIFT', action = act.SplitHorizontal { domain = 'CurrentPaneDomain' } },
-  { key = '-', mods = 'LEADER', action = act.SplitVertical { domain = 'CurrentPaneDomain' } },
-  { key = 'x', mods = 'LEADER', action = act.CloseCurrentPane { confirm = true } },
-  { key = 'z', mods = 'LEADER', action = act.TogglePaneZoomState },
+  { key = '2', mods = 'LEADER', action = act.SplitVertical { domain = 'CurrentPaneDomain' } },
+  { key = '3', mods = 'LEADER', action = act.SplitHorizontal { domain = 'CurrentPaneDomain' } },
+  { key = '0', mods = 'LEADER', action = act.CloseCurrentPane { confirm = true } },
+  { key = '1', mods = 'LEADER', action = act.TogglePaneZoomState },
+  { key = 'o', mods = 'LEADER', action = act.ActivatePaneDirection 'Next' },
+  {
+    key = '5',
+    mods = 'LEADER',
+    action = act.ActivateKeyTable {
+      name = 'emacs_frame',
+      timeout_milliseconds = 1000,
+    },
+  },
   { key = 'o', mods = 'CMD', action = layouts.picker_action() },
+}
 
-  { key = 'h', mods = 'LEADER', action = act.ActivatePaneDirection 'Left' },
-  { key = 'j', mods = 'LEADER', action = act.ActivatePaneDirection 'Down' },
-  { key = 'k', mods = 'LEADER', action = act.ActivatePaneDirection 'Up' },
-  { key = 'l', mods = 'LEADER', action = act.ActivatePaneDirection 'Right' },
+config.key_tables = {
+  emacs_frame = {
+    {
+      key = '2',
+      action = wezterm.action_callback(function(_, pane)
+        pane:move_to_new_window()
+      end),
+    },
+  },
 }
 
 return config
